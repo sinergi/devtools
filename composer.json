@@ -15,7 +15,8 @@
         "php": ">=5.4.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4"
+        "phpunit/phpunit": "~4",
+        "composer/composer": "1.0.*@dev"
     },
     "autoload": {
         "psr-4": {
@@ -26,5 +27,11 @@
         "psr-4": {
             "Sinergi\\Project\\Tests\\": ["tests/Project/Tests", "tests/Project/Tests/_includes"]
         }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "Sinergi\\Project\\Setup::setupAutoloader",
+            "Sinergi\\Project\\Setup::setupPhpStorm"
+        ]
     }
 }
