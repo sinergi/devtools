@@ -1,0 +1,30 @@
+{
+    "name": "sinergi/project",
+    "type": "library",
+    "description": "Project Dependency Workflow",
+    "keywords": ["Dependency", "Workflow"],
+    "homepage": "https://github.com/sinergi/project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gabriel Bull",
+            "email": "me@gabrielbull.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sinergi\\Project\\": "src/Project"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Sinergi\\Project\\Tests\\": ["tests/Project/Tests", "tests/Project/Tests/_includes"]
+        }
+    }
+}
