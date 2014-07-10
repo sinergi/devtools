@@ -6,6 +6,11 @@ use Sinergi\Project\Setup;
 
 class SetupTest extends PHPUnit_Framework_TestCase
 {
+    public function setUp()
+    {
+        Setup::setProjectXmlFile(__DIR__ . "/_files/project.xml");
+    }
+
     public function getEventMock()
     {
         return new ComposerEventMock();

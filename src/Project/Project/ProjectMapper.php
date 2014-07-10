@@ -8,6 +8,8 @@ use Sinergi\Project\Project\Source\SourceCollection;
 
 class ProjectMapper
 {
+    const PROJECT_XML_FILENAME = 'project.xml';
+
     /**
      * @param string $xmlFile
      * @return Project
