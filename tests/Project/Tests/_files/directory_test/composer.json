@@ -1,0 +1,13 @@
+{
+    "name": "test/mytest",
+    "autoload": {
+        "psr-4": {
+            "MyTest\\": "MyTest"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MyTest\\Tests\\": "MyTest/tests"
+        }
+    }
+}

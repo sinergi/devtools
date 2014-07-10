@@ -1,6 +1,7 @@
 <?php
 namespace Sinergi\Project\Autoloader;
 
+use Sinergi\Project\Autoloader\ProjectAutoloader\ProjectAutoloaderFileMapper;
 use Sinergi\Project\Autoloader\ProjectAutoloader\ProjectAutoloaderGenerator;
 use Sinergi\Project\Project\Project;
 
@@ -14,7 +15,7 @@ class AutoloaderBuilder
     /**
      * @var string
      */
-    private $projectAutoloaderFile;
+    private $projectAutoloaderDir;
 
     /**
      * @var string
@@ -30,12 +31,12 @@ class AutoloaderBuilder
     }
 
     /**
-     * @param string $projectAutoloaderFile
+     * @param string $projectAutoloaderDir
      * @param string $composerAutoloaderFile
      */
-    public function create($projectAutoloaderFile, $composerAutoloaderFile)
+    public function createAutoloader($projectAutoloaderDir, $composerAutoloaderFile)
     {
-        $this->projectAutoloaderFile = $projectAutoloaderFile;
+        $this->projectAutoloaderDir = $projectAutoloaderDir;
         $this->composerAutoloaderFile = $composerAutoloaderFile;
 
         $this->generateProjectAutoloader();
@@ -53,8 +54,8 @@ class AutoloaderBuilder
     private function generateProjectAutoloader()
     {
         $projectAutoloaderGenerator = new ProjectAutoloaderGenerator($this->project);
-        $projectAutoloaderGenerator->generate();
-
+        $projectAutoloaders = $projectAutoloaderGenerator->generateAutoloader();
+        (new ProjectAutoloaderFileMapper())->saveProjectAutoaderFiles($this->projectAutoloaderDir, $projectAutoloaders);
     }
 
     private function generateComposerAutoloader()

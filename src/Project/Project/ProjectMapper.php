@@ -3,7 +3,7 @@ namespace Sinergi\Project\Project;
 
 use SimpleXMLElement;
 use Sinergi\Project\Exception\FileNotFoundException;
-use Sinergi\Project\Project\Source\Directory\Directory;
+use Sinergi\Project\Project\Source\Source;
 use Sinergi\Project\Project\Source\SourceCollection;
 
 class ProjectMapper
@@ -18,7 +18,7 @@ class ProjectMapper
     {
         $content = $this->loadXmlFile($xmlFile);
 
-        $project = new Project();
+        $project = new Project(realpath(dirname($xmlFile)));
         $project->setSources($this->mapSources(isset($content['sources']) ? $content['sources'] : []));
 
         return $project;
@@ -33,9 +33,9 @@ class ProjectMapper
         $sourceCollection = new SourceCollection();
         foreach ($sources as $source) {
             if (!empty($source)) {
-                $directory = $this->mapDirectory($source);
-                if ($directory instanceof Directory) {
-                    $sourceCollection->addDirectory($directory);
+                $source = $this->mapSource($source);
+                if ($source instanceof Source) {
+                    $sourceCollection->addSource($source);
                 }
             }
         }
@@ -44,13 +44,13 @@ class ProjectMapper
 
     /**
      * @param string $path
-     * @return Directory
+     * @return Source
      */
-    private function mapDirectory($path)
+    private function mapSource($path)
     {
-        $directory = new Directory();
-        $directory->setPath($path);
-        return $directory;
+        $source = new Source();
+        $source->setPath($path);
+        return $source;
     }
 
     /**

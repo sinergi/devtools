@@ -1,0 +1,14 @@
+<?php
+
+use Sinergi\Project\Autoloader;
+
+require_once __DIR__ . "/sinergi/project/src/Autoloader.php";
+
+$autoloader = new Autoloader;
+%array
+foreach ($autoloaders as $namespace => $paths) {
+    foreach ($paths as $path) {
+        $autoloader->addNamespace($namespace, $path);
+    }
+}
+$autoloader->register();

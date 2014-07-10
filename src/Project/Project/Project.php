@@ -6,13 +6,37 @@ use Sinergi\Project\Project\Source\SourceCollection;
 class Project
 {
     /**
+     * @var string
+     */
+    private $dir;
+
+    /**
      * @var SourceCollection
      */
     private $sources;
 
-    public function __construct()
+    public function __construct($dir)
     {
+        $this->dir = $dir;
         $this->sources = new SourceCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function getDir()
+    {
+        return $this->dir;
+    }
+
+    /**
+     * @param string $dir
+     * @return $this
+     */
+    public function setDir($dir)
+    {
+        $this->dir = $dir;
+        return $this;
     }
 
     /**

@@ -1,7 +1,7 @@
 <?php
-namespace Sinergi\Project\Project\Source\Directory;
+namespace Sinergi\Project\Project\Source;
 
-class Directory
+class Source
 {
     /**
      * @var string

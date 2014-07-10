@@ -13,6 +13,8 @@ class AutoloaderBuilderTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->projectAutoloader = tempnam(sys_get_temp_dir(), 'SIN');
+        unlink($this->projectAutoloader);
+        mkdir($this->projectAutoloader);
         $this->composerAutoloader = tempnam(sys_get_temp_dir(), 'SIN');
         copy(__DIR__ . "/../_files/autoload.php", $this->composerAutoloader);
     }
@@ -25,7 +27,7 @@ class AutoloaderBuilderTest extends PHPUnit_Framework_TestCase
     public function testTrue()
     {
         $autoloaderGenerator = new AutoloaderBuilder($this->getProject());
-        $autoloaderGenerator->create(
+        $autoloaderGenerator->createAutoloader(
             $this->projectAutoloader,
             $this->composerAutoloader
         );

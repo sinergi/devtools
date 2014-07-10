@@ -6,38 +6,37 @@ use IteratorAggregate;
 use ArrayAccess;
 use JsonSerializable;
 use ArrayIterator;
-use Sinergi\Project\Project\Source\Directory\Directory;
 
 class SourceCollection implements Countable, IteratorAggregate, ArrayAccess, JsonSerializable
 {
     /**
-     * @var array|Directory[]
+     * @var array|Source[]
      */
-    private $directories = [];
+    private $items = [];
 
     /**
-     * @param Directory $directory
+     * @param Source $items
      */
-    public function addDirectory(Directory $directory)
+    public function addSource(Source $items)
     {
-        $this->directories[] = $directory;
+        $this->items[] = $items;
     }
 
     /**
-     * @return array|Directory[]
+     * @return array|Source[]
      */
     public function getDirectories()
     {
-        return $this->directories;
+        return $this->items;
     }
 
     /**
-     * @param array|Directory[] $directories
+     * @param array|Source[] $directories
      * @return $this
      */
     public function setDirectories($directories)
     {
-        $this->directories = $directories;
+        $this->items = $directories;
         return $this;
     }
 
@@ -46,7 +45,7 @@ class SourceCollection implements Countable, IteratorAggregate, ArrayAccess, Jso
      */
     public function count()
     {
-        return count($this->directories);
+        return count($this->items);
     }
 
     /**
@@ -54,7 +53,7 @@ class SourceCollection implements Countable, IteratorAggregate, ArrayAccess, Jso
      */
     public function getIterator()
     {
-        return new ArrayIterator($this->directories);
+        return new ArrayIterator($this->items);
     }
 
     /**
@@ -62,7 +61,7 @@ class SourceCollection implements Countable, IteratorAggregate, ArrayAccess, Jso
      */
     public function jsonSerialize()
     {
-        return $this->directories;
+        return $this->items;
     }
 
     /**
@@ -71,16 +70,16 @@ class SourceCollection implements Countable, IteratorAggregate, ArrayAccess, Jso
      */
     public function offsetExists($offset)
     {
-        return isset($this->directories[$offset]);
+        return isset($this->items[$offset]);
     }
 
     /**
      * @param string $offset
-     * @return Directory
+     * @return Source
      */
     public function offsetGet($offset)
     {
-        return $this->directories[$offset];
+        return $this->items[$offset];
     }
 
     /**
@@ -89,7 +88,7 @@ class SourceCollection implements Countable, IteratorAggregate, ArrayAccess, Jso
      */
     public function offsetSet($offset, $value)
     {
-        $this->directories[$offset] = $value;
+        $this->items[$offset] = $value;
     }
 
     /**
@@ -97,6 +96,6 @@ class SourceCollection implements Countable, IteratorAggregate, ArrayAccess, Jso
      */
     public function offsetUnset($offset)
     {
-        unset($this->directories[$offset]);
+        unset($this->items[$offset]);
     }
 }
