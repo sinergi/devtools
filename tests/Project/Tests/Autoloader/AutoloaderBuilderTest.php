@@ -19,17 +19,41 @@ class AutoloaderBuilderTest extends PHPUnit_Framework_TestCase
         copy(__DIR__ . "/../_files/autoload.php", $this->composerAutoloader);
     }
 
+    public function tearDown()
+    {
+        foreach (scandir($this->projectAutoloader) as $file) {
+            if ($file !== '.' && $file !== '..' && is_file($this->projectAutoloader . DIRECTORY_SEPARATOR . $file)) {
+                unlink($this->projectAutoloader . DIRECTORY_SEPARATOR . $file);
+            }
+        }
+        rmdir($this->projectAutoloader);
+        unlink($this->composerAutoloader);
+    }
+
     public function getProject()
     {
         return (new ProjectMapper())->map(__DIR__ . "/../_files/project.xml");
     }
 
-    public function testTrue()
+    public function testProjectAutoloaderBuilder()
     {
         $autoloaderGenerator = new AutoloaderBuilder($this->getProject());
         $autoloaderGenerator->createAutoloader(
             $this->projectAutoloader,
             $this->composerAutoloader
+        );
+
+        $this->assertFileExists($this->projectAutoloader . DIRECTORY_SEPARATOR . 'autoload.php');
+        $this->assertFileExists($this->projectAutoloader . DIRECTORY_SEPARATOR . 'autoload_psr4.php');
+
+        $this->assertContains(
+            '<?php',
+            file_get_contents($this->projectAutoloader . DIRECTORY_SEPARATOR . 'autoload.php')
+        );
+
+        $this->assertContains(
+            '<?php',
+            file_get_contents($this->projectAutoloader . DIRECTORY_SEPARATOR . 'autoload_psr4.php')
         );
     }
 }
