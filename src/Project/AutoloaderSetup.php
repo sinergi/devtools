@@ -1,6 +1,8 @@
 <?php
 namespace Sinergi\Project;
 
+use Composer\Autoload\AutoloadGenerator;
+use Composer\EventDispatcher\EventDispatcher;
 use Sinergi\Project\Project\Project;
 
 class AutoloaderSetup
@@ -11,15 +13,22 @@ class AutoloaderSetup
     private $project;
 
     /**
-     * @param Project $project
+     * @var EventDispatcher
      */
-    public function __construct(Project $project)
+    private $eventDispatcher;
+
+    /**
+     * @param Project $project
+     * @param EventDispatcher $eventDispatcher
+     */
+    public function __construct(Project $project, EventDispatcher $eventDispatcher)
     {
         $this->project = $project;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function setup()
     {
-
+        return;
     }
 }
