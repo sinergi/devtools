@@ -39,26 +39,6 @@ class ComposerAutoloaderGenerator
 
     /**
      * @param string $composerAutoloader
-     * @param string $projectAutoloaderDir
-     * @return string
-     * @deprecated
-     */
-    private function getProjectDirPathDiff($composerAutoloader, $projectAutoloaderDir)
-    {
-        $composerAutoloaderDirs = explode(DIRECTORY_SEPARATOR, $composerAutoloader);
-        $projectAutoloaderDirs = explode(DIRECTORY_SEPARATOR, $projectAutoloaderDir);
-        $key = 0;
-        foreach ($composerAutoloaderDirs as $key => $value) {
-            if ($value !== $projectAutoloaderDirs[$key]) {
-                break;
-            }
-        }
-        $projectAutoloaderDirs = array_slice($projectAutoloaderDirs, $key, 1);
-        return implode(DIRECTORY_SEPARATOR, $projectAutoloaderDirs);
-    }
-
-    /**
-     * @param string $composerAutoloader
      * @return string
      */
     private function getComposerAutoloaderContent($composerAutoloader)

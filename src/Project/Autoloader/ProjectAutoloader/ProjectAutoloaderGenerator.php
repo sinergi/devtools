@@ -60,6 +60,22 @@ class ProjectAutoloaderGenerator
             if (is_array($composerAutoloadConfig)) {
                 foreach ($composerAutoloadConfig as $type => $autoloader) {
                     if ($type === 'psr-4') {
+                        if (is_array($autoloader)) {
+                            $sharedPaths = [];
+                            foreach ($autoloader as &$path) {
+                                $path = DIRECTORY_SEPARATOR .
+                                    trim($source->getPath(), '\\/' . DIRECTORY_SEPARATOR) .
+                                    DIRECTORY_SEPARATOR . $path;
+
+                                $dirname = basename($source->getPath());
+                                $sharedPaths[] = '/../shared' .
+                                    DIRECTORY_SEPARATOR . $dirname .
+                                    DIRECTORY_SEPARATOR . $path;
+                            }
+                            $autoloader = array_merge($autoloader, $sharedPaths);
+                        } else {
+                            $autoloader = [];
+                        }
                         if (isset($autoloaders['psr-4'])) {
                             $autoloaders['psr-4'] = array_merge($autoloaders['psr-4'], $autoloader);
                         } else {
@@ -79,16 +95,16 @@ class ProjectAutoloaderGenerator
     }
 
     /**
-     * @param array $autoloader
+     * @param array $autoloaders
      * @return string
      */
-    private function generatePsr4Autoloaders(array $autoloader)
+    private function generatePsr4Autoloaders(array $autoloaders)
     {
         $autoloaderTemplate = file_get_contents(__DIR__ . "/templates/autoload_psr4.txt");
         $itemTemplate = file_get_contents(__DIR__ . "/templates/autoload_psr4_item.txt");
 
         $autoloaderString = '';
-        foreach ($autoloader as $namespace => $paths) {
+        foreach ($autoloaders as $namespace => $paths) {
             if (!is_array($paths)) {
                 $paths = [$paths];
             }
@@ -96,7 +112,7 @@ class ProjectAutoloaderGenerator
             $pathsString = '';
             foreach ($paths as $path) {
                 $path = DIRECTORY_SEPARATOR . trim($path, '/' . DIRECTORY_SEPARATOR);
-                $pathsString .= "\$baseDir . '{$path}', ";
+                $pathsString .= "\$basedir . '{$path}', ";
             }
             $pathsString = substr($pathsString, 0, -2);
             $autoloaderString .= str_replace(['%namespace', '%paths'], [$namespace, $pathsString], $itemTemplate);
@@ -105,6 +121,26 @@ class ProjectAutoloaderGenerator
         $autoloader = str_replace('%array', $autoloaderString, $autoloaderTemplate);
 
         return $autoloader;
+    }
+
+    /**
+     * @param string $composerAutoloader
+     * @param string $projectAutoloaderDir
+     * @return string
+     * @deprecated
+     */
+    private function getProjectDirPathDiff($composerAutoloader, $projectAutoloaderDir)
+    {
+        $composerAutoloaderDirs = explode(DIRECTORY_SEPARATOR, $composerAutoloader);
+        $projectAutoloaderDirs = explode(DIRECTORY_SEPARATOR, $projectAutoloaderDir);
+        $key = 0;
+        foreach ($composerAutoloaderDirs as $key => $value) {
+            if ($value !== $projectAutoloaderDirs[$key]) {
+                break;
+            }
+        }
+        $projectAutoloaderDirs = array_slice($projectAutoloaderDirs, $key, 1);
+        return implode(DIRECTORY_SEPARATOR, $projectAutoloaderDirs);
     }
 
     /**
