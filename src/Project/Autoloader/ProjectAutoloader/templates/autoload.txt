@@ -4,7 +4,7 @@
 
 use Sinergi\Project\Autoloader;
 
-require_once __DIR__ . "/sinergi/project/src/Autoloader.php";
+require_once dirname(dirname(__DIR__)) . "/sinergi/project/src/Autoloader.php";
 
 $autoloader = new Autoloader;
 %array
