@@ -26,4 +26,23 @@ It is recommended that you install the Project library [through composer](http:/
 
 ## Examples
 
-No example yet, sorry.
+No reat doc yet, sorry. But this is basically what needs to be added to composer.json:
+
+```json
+    "scripts": {
+        "post-autoload-dump": [
+            "Sinergi\\Project\\Setup::setupAutoloader",
+            "Sinergi\\Project\\Setup::setupPhpStorm"
+        ]
+    }
+```
+
+And this is an example of the project.xml file:
+
+```json
+<project>
+    <sources>
+        <directory>../dependency/</directory>
+    </sources>
+</project>
+```

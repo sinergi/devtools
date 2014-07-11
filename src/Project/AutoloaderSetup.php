@@ -19,6 +19,9 @@ class AutoloaderSetup
         $this->project = $project;
     }
 
+    /**
+     * @return bool
+     */
     public function setup()
     {
         $autoloaderGenerator = new AutoloaderBuilder($this->project);
@@ -29,11 +32,17 @@ class AutoloaderSetup
         return true;
     }
 
+    /**
+     * @return string
+     */
     private function getComposerAutoloader()
     {
         return $this->project->getDir() . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
     }
 
+    /**
+     * @return string
+     */
     private function getProjectAutoloaderDir()
     {
         return $this->project->getDir() . DIRECTORY_SEPARATOR . 'vendor/composer/project';

@@ -1,0 +1,19 @@
+require 'rexml/document'
+
+directories = {}
+if File.exist?('project.xml')
+    doc = REXML::Document.new(File.read('project.xml'))
+    doc.elements.each('project/sources/directory') do |p|
+      directories[Pathname.new(p.text).basename] = p.text
+    end
+end
+
+Vagrant.configure("2") do |config|
+  config.vm.synced_folder ".", "/vagrant", id: "vagrant-root",
+    :mount_options => ["uid=48,gid=48,dmode=775,fmode=664"]
+
+  directories.each do |dir, path|
+    config.vm.synced_folder path, "/shared/#{dir}", id: "#{dir}",
+      :mount_options => ["uid=48,gid=48,dmode=775,fmode=664"]
+  end
+end

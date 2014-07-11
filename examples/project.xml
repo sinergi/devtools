@@ -1,0 +1,5 @@
+<project>
+    <sources>
+        <directory>directory_test</directory>
+    </sources>
+</project>

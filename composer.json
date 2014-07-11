@@ -27,11 +27,5 @@
         "psr-4": {
             "Sinergi\\Project\\Tests\\": ["tests/Project/Tests", "tests/Project/Tests/_includes"]
         }
-    },
-    "scripts": {
-        "post-autoload-dump": [
-            "Sinergi\\Project\\Setup::setupAutoloader",
-            "Sinergi\\Project\\Setup::setupPhpStorm"
-        ]
     }
 }

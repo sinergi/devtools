@@ -1,0 +1,12 @@
+{
+    "name": "vendor/project",
+    "require": {
+        "sinergi/project": "dev-master"
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "Sinergi\\Project\\Setup::setupAutoloader",
+            "Sinergi\\Project\\Setup::setupPhpStorm"
+        ]
+    }
+}
