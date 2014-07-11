@@ -56,4 +56,21 @@ class AutoloaderBuilderTest extends PHPUnit_Framework_TestCase
             file_get_contents($this->projectAutoloader . DIRECTORY_SEPARATOR . 'autoload_psr4.php')
         );
     }
+
+    public function testComposerAutoloaderBuilder()
+    {
+        $autoloaderGenerator = new AutoloaderBuilder($this->getProject());
+        $autoloaderGenerator->createAutoloader(
+            $this->projectAutoloader,
+            $this->composerAutoloader
+        );
+
+        $this->assertFileExists($this->composerAutoloader);
+
+        $dir = basename($this->projectAutoloader);
+        $this->assertContains(
+            "require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '{$dir}/autoload.php';",
+            file_get_contents($this->composerAutoloader)
+        );
+    }
 }
