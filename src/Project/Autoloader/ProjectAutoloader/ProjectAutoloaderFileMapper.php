@@ -17,6 +17,10 @@ class ProjectAutoloaderFileMapper
      */
     public function saveProjectAutoaderFiles($dir, array $autoloaders)
     {
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
+
         foreach ($autoloaders as $type => $content) {
             $filename = self::$filenames[$type];
             file_put_contents($dir . DIRECTORY_SEPARATOR . $filename, $content);

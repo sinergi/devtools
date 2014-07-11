@@ -57,12 +57,14 @@ class ProjectAutoloaderGenerator
                 $this->project->getDir() . DIRECTORY_SEPARATOR . $source->getPath() .
                 DIRECTORY_SEPARATOR . 'composer.json'
             );
-            foreach ($composerAutoloadConfig as $type => $autoloader) {
-                if ($type === 'psr-4') {
-                    if (isset($autoloaders['psr-4'])) {
-                        $autoloaders['psr-4'] = array_merge($autoloaders['psr-4'], $autoloader);
-                    } else {
-                        $autoloaders['psr-4'] = $autoloader;
+            if (is_array($composerAutoloadConfig)) {
+                foreach ($composerAutoloadConfig as $type => $autoloader) {
+                    if ($type === 'psr-4') {
+                        if (isset($autoloaders['psr-4'])) {
+                            $autoloaders['psr-4'] = array_merge($autoloaders['psr-4'], $autoloader);
+                        } else {
+                            $autoloaders['psr-4'] = $autoloader;
+                        }
                     }
                 }
             }
