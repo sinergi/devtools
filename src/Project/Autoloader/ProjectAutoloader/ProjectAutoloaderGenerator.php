@@ -117,7 +117,7 @@ class ProjectAutoloaderGenerator
             $pathsString = '';
             foreach ($paths as $path) {
                 $path = DIRECTORY_SEPARATOR . trim($path, '/' . DIRECTORY_SEPARATOR);
-                $pathsString .= "\$basedir . '{$path}', ";
+                $pathsString .= "\$baseDir . '{$path}', ";
             }
             $pathsString = substr($pathsString, 0, -2);
             $autoloaderString .= str_replace(['%namespace', '%paths'], [$namespace, $pathsString], $itemTemplate);
