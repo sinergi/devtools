@@ -67,9 +67,8 @@ class AutoloaderBuilderTest extends PHPUnit_Framework_TestCase
 
         $this->assertFileExists($this->composerAutoloader);
 
-        $dir = basename($this->projectAutoloader);
         $this->assertContains(
-            "require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '{$dir}/autoload.php';",
+            "require_once __DIR__ . DIRECTORY_SEPARATOR . 'composer/project/autoload.php';",
             file_get_contents($this->composerAutoloader)
         );
     }

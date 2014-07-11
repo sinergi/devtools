@@ -21,17 +21,15 @@ class ComposerAutoloaderGenerator
 
     /**
      * @param string $composerAutoloader
-     * @param string $projectAutoloaderDir
      * @return array
      */
-    public function generateAutoloader($composerAutoloader, $projectAutoloaderDir)
+    public function generateAutoloader($composerAutoloader)
     {
         $projectAutoloaderTemplate = file_get_contents(__DIR__ . "/templates/project_autoloader.txt");
-        $projectAutoloaderDir = $this->getProjectDirPathDiff($composerAutoloader, $projectAutoloaderDir);
 
         $projectAutoloader = str_replace(
             '%file',
-            $projectAutoloaderDir . DIRECTORY_SEPARATOR . ProjectAutoloaderFileMapper::getFilename('main'),
+            'composer/project/' . ProjectAutoloaderFileMapper::getFilename('main'),
             $projectAutoloaderTemplate
         );
 
@@ -43,6 +41,7 @@ class ComposerAutoloaderGenerator
      * @param string $composerAutoloader
      * @param string $projectAutoloaderDir
      * @return string
+     * @deprecated
      */
     private function getProjectDirPathDiff($composerAutoloader, $projectAutoloaderDir)
     {
