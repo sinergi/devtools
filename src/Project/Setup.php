@@ -25,7 +25,7 @@ class Setup
     public static function setupAutoloader(Event $event)
     {
         if ($event->isDevMode()) {
-            (new AutoloaderSetup(self::getProject(), $event))->setup();
+            (new AutoloaderSetup(self::getProject()))->setup();
             return true;
         }
         return false;

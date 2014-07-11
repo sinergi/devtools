@@ -30,11 +30,11 @@ class ProjectMapperTest extends PHPUnit_Framework_TestCase
         $this->assertCount(1, $project->getSources());
     }
 
-    public function testMapDirectory()
+    public function testMapSource()
     {
         $projectMapper = new ProjectMapper();
         $project = $projectMapper->map(__DIR__ . "/../_files/project.xml");
-        $this->assertInstanceOf('\\Sinergi\\Project\\Project\\Source\\Directory\\Directory', $project->getSources()[0]);
+        $this->assertInstanceOf('\\Sinergi\\Project\\Project\\Source\\Source', $project->getSources()[0]);
         $this->assertEquals('directory_test', $project->getSources()[0]->getPath());
     }
 }
