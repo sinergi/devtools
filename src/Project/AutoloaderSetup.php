@@ -2,6 +2,8 @@
 namespace Sinergi\Project;
 
 use Sinergi\Project\Autoloader\AutoloaderBuilder;
+use Sinergi\Project\Dependency\DependencyController;
+use Sinergi\Project\Dependency\DependencyEntity;
 use Sinergi\Project\Project\Project;
 
 class AutoloaderSetup
@@ -29,7 +31,35 @@ class AutoloaderSetup
             $this->getProjectAutoloaderDir(),
             $this->getComposerAutoloader()
         );
+        $this->dependencySetup();
         return true;
+    }
+
+    private function dependencySetup()
+    {
+        $dependencyController = new DependencyController();
+        foreach ($this->project->getSources() as $source) {
+            $name = $this->loadComposerConfigName(
+                $this->project->getDir() . DIRECTORY_SEPARATOR . $source->getPath() .
+                DIRECTORY_SEPARATOR . 'composer.json'
+            );
+            $dependency = new DependencyEntity($this->project);
+            $dependency->setName($name);
+            $dependencyController->deleteDependencyDirectory($dependency);
+        }
+    }
+
+    /**
+     * @param string $path
+     * @return string|null
+     */
+    private function loadComposerConfigName($path)
+    {
+        if (file_exists($path)) {
+            $config = json_decode(file_get_contents($path), true);
+            return isset($config['name']) ? $config['name'] : null;
+        }
+        return null;
     }
 
     /**
