@@ -34,7 +34,7 @@ class ComposerAutoloaderGenerator
         );
 
         $autoloaderContent = $this->getComposerAutoloaderContent($composerAutoloader);
-        return preg_replace('/require_once/', $projectAutoloader . 'require_once', $autoloaderContent, 1);
+        return preg_replace('/require_once(.*)/', 'require_once$1' . $projectAutoloader, $autoloaderContent, 1);
     }
 
     /**
