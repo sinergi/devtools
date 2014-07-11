@@ -61,18 +61,23 @@ class ProjectAutoloaderGenerator
                 foreach ($composerAutoloadConfig as $type => $autoloader) {
                     if ($type === 'psr-4') {
                         if (is_array($autoloader)) {
-                            $sharedPaths = [];
-                            foreach ($autoloader as &$path) {
-                                $path = DIRECTORY_SEPARATOR .
-                                    trim($source->getPath(), '\\/' . DIRECTORY_SEPARATOR) .
-                                    DIRECTORY_SEPARATOR . $path;
+                            foreach ($autoloader as &$paths) {
+                                if (!is_array($paths)) {
+                                    $paths = [$paths];
+                                }
+                                $sharedPaths = [];
+                                foreach ($paths as &$path) {
+                                    $path = DIRECTORY_SEPARATOR .
+                                        trim($source->getPath(), '\\/' . DIRECTORY_SEPARATOR) .
+                                        DIRECTORY_SEPARATOR . $path;
 
-                                $dirname = basename($source->getPath());
-                                $sharedPaths[] = '/../shared' .
-                                    DIRECTORY_SEPARATOR . $dirname .
-                                    DIRECTORY_SEPARATOR . $path;
+                                    $dirname = basename($source->getPath());
+                                    $sharedPaths[] = '/../shared' .
+                                        DIRECTORY_SEPARATOR . $dirname .
+                                        DIRECTORY_SEPARATOR . $path;
+                                }
+                                $paths = array_merge($paths, $sharedPaths);
                             }
-                            $autoloader = array_merge($autoloader, $sharedPaths);
                         } else {
                             $autoloader = [];
                         }
