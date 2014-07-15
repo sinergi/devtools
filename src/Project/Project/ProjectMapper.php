@@ -31,11 +31,13 @@ class ProjectMapper
     private function mapSources(array $sources)
     {
         $sourceCollection = new SourceCollection();
-        foreach ($sources as $source) {
-            if (!empty($source)) {
-                $source = $this->mapSource($source);
-                if ($source instanceof Source) {
-                    $sourceCollection->addSource($source);
+        if (isset($sources['directory'])) {
+            foreach ($sources['directory'] as $source) {
+                if (!empty($source)) {
+                    $source = $this->mapSource($source);
+                    if ($source instanceof Source) {
+                        $sourceCollection->addSource($source);
+                    }
                 }
             }
         }
