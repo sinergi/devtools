@@ -32,6 +32,9 @@ class ProjectMapper
     {
         $sourceCollection = new SourceCollection();
         if (isset($sources['directory'])) {
+            if (!is_array($sources['directory'])) {
+                $sources['directory'] = [$sources['directory']];
+            }
             foreach ($sources['directory'] as $source) {
                 if (!empty($source)) {
                     $source = $this->mapSource($source);
