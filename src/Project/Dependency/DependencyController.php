@@ -8,11 +8,16 @@ class DependencyController
      */
     public function deleteDependencyDirectory(DependencyEntity $dependency)
     {
-        $dir = $dependency->getProject()->getDir() .
-            DIRECTORY_SEPARATOR . 'vendor' .
-            DIRECTORY_SEPARATOR . $dependency->getName();
-        if (is_dir($dir)) {
-            $this->deleteDirectoryRecursively($dir);
+        $name = $dependency->getName();
+        $name = trim($name, '. /\\' . DIRECTORY_SEPARATOR . PHP_EOL);
+        $name = str_replace('/../', '/', $name);
+        if (strlen($name) > 0) {
+            $dir = $dependency->getProject()->getDir() .
+                DIRECTORY_SEPARATOR . 'vendor' .
+                DIRECTORY_SEPARATOR . $name;
+            if (is_dir($dir)) {
+                $this->deleteDirectoryRecursively($dir);
+            }
         }
     }
 
