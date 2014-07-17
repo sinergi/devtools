@@ -1,6 +1,7 @@
 <?php
 namespace Sinergi\Project;
 
+use Exception;
 use Composer\Script\Event;
 use Sinergi\Project\Ide\PhpStormIde;
 use Sinergi\Project\Project\ProjectMapper;
@@ -25,7 +26,11 @@ class Setup
     public static function setupAutoloader(Event $event)
     {
         if ($event->isDevMode()) {
-            (new AutoloaderSetup(self::getProject()))->setup();
+            try {
+                (new AutoloaderSetup(self::getProject()))->setup();
+            } catch (Exception $e) {
+                null;
+            }
             return true;
         }
         return false;
@@ -38,7 +43,11 @@ class Setup
     public static function setupPhpStorm(Event $event)
     {
         if ($event->isDevMode()) {
-            (new IdeSetup(self::getProject(), new PhpStormIde()))->setup();
+            try {
+                (new IdeSetup(self::getProject(), new PhpStormIde()))->setup();
+            } catch (Exception $e) {
+                null;
+            }
             return true;
         }
         return false;
