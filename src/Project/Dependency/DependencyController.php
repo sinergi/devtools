@@ -1,9 +1,6 @@
 <?php
 namespace Sinergi\Project\Dependency;
 
-use RecursiveIteratorIterator;
-use RecursiveDirectoryIterator;
-
 class DependencyController
 {
     /**
@@ -84,15 +81,18 @@ class DependencyController
      */
     private function copyDirectoryRecursively($source, $dest)
     {
-        foreach (
-            $iterator = new RecursiveIteratorIterator(
-                new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS),
-                RecursiveIteratorIterator::SELF_FIRST) as $item
-        ) {
-            if ($item->isDir()) {
-                mkdir($dest . DIRECTORY_SEPARATOR . $item->getSubPathname());
-            } else {
-                copy($item, $dest . DIRECTORY_SEPARATOR . $item->getSubPathname());
+        if (is_dir($source)) {
+            if (!is_dir($dest)) {
+                mkdir($dest, 0777, true);
+            }
+            foreach (scandir($source) as $file) {
+                if ($file !== "." && $file !== "..") {
+                    if (is_dir("{$source}/{$file}")) {
+                        $this->copyDirectoryRecursively("{$source}/{$file}", "{$dest}/{$file}");
+                    } else {
+                        copy("{$source}/{$file}", "{$dest}/{$file}");
+                    }
+                }
             }
         }
     }
