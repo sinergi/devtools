@@ -18,24 +18,28 @@ class DependencyController
             if (is_dir($dir)) {
                 // todo: backing up the bin directory does not ensure that all bin files are kept as
                 // todo: the might be in any directory
-                $binBackup = $this->createBinDirectoryBackup($dir);
+                $binBackup = $this->createDirectoryBackup($dir . "/bin");
+                $gitBackup = $this->createDirectoryBackup($dir . "/.git");
                 $this->deleteDirectoryRecursively($dir);
                 if ($binBackup) {
-                    $this->restoreBinDirectory($binBackup);
+                    $this->restoreDirectory($binBackup);
+                }
+                if ($gitBackup) {
+                    $this->restoreDirectory($gitBackup);
                 }
             }
         }
     }
 
     /**
-     * @param string $dir
+     * @param string $source
      * @return array|null
      */
-    private function createBinDirectoryBackup($dir)
+    private function createDirectoryBackup($source)
     {
-        $source = $dir . "/bin";
         if (is_dir($source)) {
-            $dest = tempnam(sys_get_temp_dir(), 'BINBAK_');
+            $name = strtoupper(basename($source));
+            $dest = tempnam(sys_get_temp_dir(), "SINERGI_PROJECT_BAK_{$name}");
             if (is_file($dest)) {
                 unlink($dest);
                 mkdir($dest, 0777, true);
@@ -49,7 +53,7 @@ class DependencyController
     /**
      * @param array $parameters
      */
-    private function restoreBinDirectory(array $parameters)
+    private function restoreDirectory(array $parameters)
     {
         list($dest, $source) = $parameters;
         $this->copyDirectoryRecursively($source, $dest);
