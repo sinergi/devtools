@@ -87,7 +87,7 @@ class DependencyController
     {
         if (is_dir($source)) {
             if (!is_dir($dest)) {
-                $perms = fileperms($dest);
+                $perms = fileperms($source);
                 mkdir($dest, $perms, true);
             }
             foreach (scandir($source) as $file) {
