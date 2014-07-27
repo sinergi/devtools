@@ -87,14 +87,17 @@ class DependencyController
     {
         if (is_dir($source)) {
             if (!is_dir($dest)) {
-                mkdir($dest, 0777, true);
+                $perms = fileperms($dest);
+                mkdir($dest, $perms, true);
             }
             foreach (scandir($source) as $file) {
                 if ($file !== "." && $file !== "..") {
                     if (is_dir("{$source}/{$file}")) {
                         $this->copyDirectoryRecursively("{$source}/{$file}", "{$dest}/{$file}");
                     } else {
+                        $perms = fileperms("{$source}/{$file}");
                         copy("{$source}/{$file}", "{$dest}/{$file}");
+                        chmod("{$dest}/{$file}", $perms);
                     }
                 }
             }
