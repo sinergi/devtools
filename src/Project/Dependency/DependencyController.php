@@ -1,6 +1,9 @@
 <?php
 namespace Sinergi\Project\Dependency;
 
+use RecursiveIteratorIterator;
+use RecursiveDirectoryIterator;
+
 class DependencyController
 {
     /**
@@ -16,9 +19,44 @@ class DependencyController
                 DIRECTORY_SEPARATOR . 'vendor' .
                 DIRECTORY_SEPARATOR . $name;
             if (is_dir($dir)) {
+                // todo: backing up the bin directory does not ensure that all bin files are kept as
+                // todo: the might be in any directory
+                $binBackup = $this->createBinDirectoryBackup($dir);
                 $this->deleteDirectoryRecursively($dir);
+                if ($binBackup) {
+                    $this->restoreBinDirectory($binBackup);
+                }
             }
         }
+    }
+
+    /**
+     * @param string $dir
+     * @return array|null
+     */
+    private function createBinDirectoryBackup($dir)
+    {
+        $source = $dir . "/bin";
+        if (is_dir($source)) {
+            $dest = tempnam(sys_get_temp_dir(), 'BINBAK_');
+            if (is_file($dest)) {
+                unlink($dest);
+                mkdir($dest, 0777, true);
+            }
+            $this->copyDirectoryRecursively($source, $dest);
+            return [$source, $dest];
+        }
+        return null;
+    }
+
+    /**
+     * @param array $parameters
+     */
+    private function restoreBinDirectory(array $parameters)
+    {
+        list($dest, $source) = $parameters;
+        $this->copyDirectoryRecursively($source, $dest);
+        $this->deleteDirectoryRecursively($source);
     }
 
     /**
@@ -37,6 +75,25 @@ class DependencyController
                 }
             }
             rmdir($dir);
+        }
+    }
+
+    /**
+     * @param string $source
+     * @param string $dest
+     */
+    private function copyDirectoryRecursively($source, $dest)
+    {
+        foreach (
+            $iterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS),
+                RecursiveIteratorIterator::SELF_FIRST) as $item
+        ) {
+            if ($item->isDir()) {
+                mkdir($dest . DIRECTORY_SEPARATOR . $item->getSubPathname());
+            } else {
+                copy($item, $dest . DIRECTORY_SEPARATOR . $item->getSubPathname());
+            }
         }
     }
 }
