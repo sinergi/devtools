@@ -136,8 +136,12 @@ class ProjectAutoloaderGenerator
     {
         if (file_exists($path)) {
             $config = json_decode(file_get_contents($path), true);
-            $config['autoload'] = !is_array($config['autoload']) ? [] : $config['autoload'];
-            $config['autoload-dev'] = !is_array($config['autoload-dev']) ? [] : $config['autoload-dev'];
+            $config['autoload'] =
+                (!isset($config['autoload']) || !is_array($config['autoload'])) ?
+                    [] : $config['autoload'];
+            $config['autoload-dev'] =
+                (!isset($config['autoload-dev']) || !is_array($config['autoload-dev'])) ?
+                    [] : $config['autoload-dev'];
             foreach ($config['autoload-dev'] as $type => $autoloader) {
                 if (isset($config['autoload'][$type])) {
                     $config['autoload'][$type] = array_merge($config['autoload'][$type], $autoloader);
