@@ -8,9 +8,11 @@ require_once dirname(dirname(__DIR__)) . "/sinergi/project/src/Project/Autoloade
 
 $autoloader = new Autoloader;
 %array
-foreach ($autoloaders as $namespace => $paths) {
-    foreach ($paths as $path) {
-        $autoloader->addNamespace($namespace, $path);
+if (isset($autoloaders)) {
+    foreach ($autoloaders as $namespace => $paths) {
+        foreach ($paths as $path) {
+            $autoloader->addNamespace($namespace, $path);
+        }
     }
 }
 $autoloader->register();
