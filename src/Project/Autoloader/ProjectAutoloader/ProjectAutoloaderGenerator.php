@@ -67,14 +67,13 @@ class ProjectAutoloaderGenerator
                                 }
                                 $sharedPaths = [];
                                 foreach ($paths as &$path) {
+                                    $sharedPaths[] = '/../shared' .
+                                        DIRECTORY_SEPARATOR . basename($source->getPath()) .
+                                        DIRECTORY_SEPARATOR . trim($path, '\\/' . DIRECTORY_SEPARATOR);
+
                                     $path = DIRECTORY_SEPARATOR .
                                         trim($source->getPath(), '\\/' . DIRECTORY_SEPARATOR) .
                                         DIRECTORY_SEPARATOR . $path;
-
-                                    $dirname = basename($source->getPath());
-                                    $sharedPaths[] = '/../shared' .
-                                        DIRECTORY_SEPARATOR . basename($dirname) .
-                                        DIRECTORY_SEPARATOR . trim($path, '\\/' . DIRECTORY_SEPARATOR);
                                 }
                                 $paths = array_merge($paths, $sharedPaths);
                             }
