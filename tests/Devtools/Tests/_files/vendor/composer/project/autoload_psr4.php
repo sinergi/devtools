@@ -6,6 +6,6 @@ $vendorDir = dirname(dirname(__DIR__));
 $baseDir = dirname($vendorDir);
 
 return [
-    'MyTest\\' => [$baseDir . '/directory_test/MyTest', $baseDir . '/../shared/directory_test/directory_test/MyTest'],
-    'MyTest\\Tests\\' => [$baseDir . '/directory_test/MyTest/tests', $baseDir . '/../shared/directory_test/directory_test/MyTest/tests'],
+    'MyTest\\' => [$baseDir . '/directory_test/MyTest', $baseDir . '/../shared/directory_test/MyTest'],
+    'MyTest\\Tests\\' => [$baseDir . '/directory_test/MyTest/tests', $baseDir . '/../shared/directory_test/MyTest/tests'],
 ];
