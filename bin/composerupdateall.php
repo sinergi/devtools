@@ -14,4 +14,4 @@ if (file_exists($vendor . "/autoload.php")) {
 }
 
 // todo use symfony console as it is standard
-(new \Sinergi\Devtools\ComposerUpdateAllCommand())->run();
+(new \Sinergi\Devtools\Composer\UpdateAllCommand())->run();

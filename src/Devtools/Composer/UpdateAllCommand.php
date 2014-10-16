@@ -1,7 +1,7 @@
 <?php
-namespace Sinergi\Devtools;
+namespace Sinergi\Devtools\Composer;
 
-class ComposerUpdateAllCommand
+class UpdateAllCommand
 {
     const COMPOSER_FILE = 'composer.json';
 
@@ -72,7 +72,6 @@ class ComposerUpdateAllCommand
 
             ob_start();
             passthru("git checkout -- .");
-            $retval = ob_get_contents();
             ob_end_clean();
         }
     }
@@ -114,5 +113,3 @@ class ComposerUpdateAllCommand
         return $retval;
     }
 }
-
-(new ComposeUpdateAll())->run();
