@@ -27,5 +27,8 @@
         "psr-4": {
             "Sinergi\\Devtools\\Tests\\": ["tests/Devtools/Tests", "tests/Devtools/Tests/_includes"]
         }
-    }
+    },
+    "bin": [
+        "bin/composerupdateall"
+    ]
 }
