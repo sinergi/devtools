@@ -45,7 +45,7 @@ class AutoloaderSetup
             );
             $dependency = new DependencyEntity($this->project);
             $dependency->setName($name);
-            $dependencyController->deleteDependencyDirectory($dependency);
+            // todo $dependencyController->deleteDependencyDirectory($dependency);
         }
     }
 
