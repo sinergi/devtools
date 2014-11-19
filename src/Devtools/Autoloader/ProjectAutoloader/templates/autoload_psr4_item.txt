@@ -1,1 +1,1 @@
-    '%namespace' => [%paths],
+        '%namespace' => [%paths],

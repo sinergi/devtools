@@ -4,15 +4,17 @@
 
 use Sinergi\Devtools\Autoloader;
 
-require_once dirname(dirname(__DIR__)) . "/sinergi/devtools/src/Devtools/Autoloader.php";
+if (!defined('DISABLE_DEVTOOLS_AUTOLOAD')) {
+    require_once dirname(dirname(__DIR__)) . "/sinergi/devtools/src/Devtools/Autoloader.php";
 
-$autoloader = new Autoloader;
-%array
-if (isset($autoloaders)) {
-    foreach ($autoloaders as $namespace => $paths) {
-        foreach ($paths as $path) {
-            $autoloader->addNamespace($namespace, $path);
+    $autoloader = new Autoloader;
+    %array
+    if (isset($autoloaders)) {
+        foreach ($autoloaders as $namespace => $paths) {
+            foreach ($paths as $path) {
+                $autoloader->addNamespace($namespace, $path);
+            }
         }
     }
+    $autoloader->register();
 }
-$autoloader->register();
