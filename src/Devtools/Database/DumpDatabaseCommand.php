@@ -24,10 +24,11 @@ class DumpDatabaseCommand
     /**
      * @return string
      */
-    public function generateTmpCwd()
+    private function generateTmpCwd()
     {
         $dir = tempnam(sys_get_temp_dir(), '');
-        mkdir($dir);
+        unlink($dir);
+        mkdir($dir, 0777, true);
         return $dir;
     }
 
@@ -38,5 +39,18 @@ class DumpDatabaseCommand
         echo '---------------------------------------------' . PHP_EOL;
 
         Git::cloneRepository($this->cwd, $this->gitRepository);
+        $this->dumpDatabase();
+        Git::commit($this->cwd, $this->gitRepository);
+        Git::push($this->cwd, $this->gitRepository);
+    }
+
+    private function dumpDatabase()
+    {
+        passthru("mysqldump -h {$this->database->getHost()} " .
+            "-u {$this->database->getUsername()} " .
+            "-p{$this->database->getPassword()} " .
+            "{$this->database->getDatabaseName()} > {$this->cwd}/develop.sql");
+
+        echo $this->cwd.PHP_EOL;
     }
 }
